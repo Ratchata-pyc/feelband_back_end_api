@@ -7,91 +7,95 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// ตัวอย่าง schema ของคุณ
 model User {
-  id           Int        @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   firstName    String
   lastName     String
-  email        String     @unique
+  email        String   @unique
   password     String
+  isAdmin      Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  isAvailable  Boolean  @default(false)
   profileImage String?
-  isAdmin      Boolean    @default(false)
-  isActive     Boolean    @default(true)
-  isAvailable  Boolean    @default(false)
-  createdAt    DateTime   @default(now()) @db.Timestamp(0)
-  updatedAt    DateTime   @updatedAt @db.Timestamp(0)
-  Musician     Musician[]
-  Review       Review[]
-  Report       Report[]
+  roleId       Int?
+  genreId      Int?
+  budget       String?
+  provinceId   Int?
+  districtId   Int?
+  contact      String?
+  description  String?
+  createdAt    DateTime @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime @updatedAt @db.Timestamp(0)
+
+  province ProvinceList? @relation(fields: [provinceId], references: [id])
+  district DistrictList? @relation(fields: [districtId], references: [id])
+  role     RoleList?     @relation(fields: [roleId], references: [id])
+  genre    GenreList?    @relation(fields: [genreId], references: [id])
+
+  sentReviews     Review[] @relation("sentReviews")
+  receivedReviews Review[] @relation("receivedReviews")
+  sentReports     Report[] @relation("sentReports")
+  receivedReports Report[] @relation("receivedReports")
+
+  @@index([provinceId])
+  @@index([districtId])
+  @@index([roleId])
+  @@index([genreId])
 }
 
-model Musician {
-  id          Int     @id @default(autoincrement())
-  userId      Int
-  roleId      Int
-  genreId     Int
-  budget      String
-  provinceId  Int
-  districtId  Int
-  contact     String
-  description String?
-
-  user     User          @relation(fields: [userId], references: [id])
-  province province_list @relation(fields: [provinceId], references: [id])
-  district district_list @relation(fields: [districtId], references: [id])
-  role     role_list     @relation(fields: [roleId], references: [id])
-  genre    genre_list    @relation(fields: [genreId], references: [id])
-  Review   Review[]
-  Report   Report[]
+model ProvinceList {
+  id           Int            @id @default(autoincrement())
+  province     String
+  user         User[]
+  districtList DistrictList[]
 }
 
-model province_list {
-  id            Int             @id @default(autoincrement())
-  province      String
-  Musician      Musician[]
-  district_list district_list[]
-}
-
-model district_list {
-  id         Int           @id @default(autoincrement())
+model DistrictList {
+  id         Int          @id @default(autoincrement())
   provinceId Int
   district   String
-  Musician   Musician[]
-  province   province_list @relation(fields: [provinceId], references: [id])
+  user       User[]
+  province   ProvinceList @relation(fields: [provinceId], references: [id])
 }
 
-model role_list {
-  id       Int        @id @default(autoincrement())
-  role     String
-  Musician Musician[]
+model RoleList {
+  id   Int    @id @default(autoincrement())
+  role String
+  user User[]
 }
 
-model genre_list {
-  id       Int        @id @default(autoincrement())
-  genre    String
-  Musician Musician[]
+model GenreList {
+  id    Int    @id @default(autoincrement())
+  genre String
+  user  User[]
 }
 
 model Review {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  musicianId Int
+  id         Int       @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
   content    String
-  createdAt  DateTime @default(now()) @db.Timestamp(0)
-  updatedAt  DateTime @updatedAt @db.Timestamp(0)
-  deletedAt  DateTime @updatedAt @db.Timestamp(0)
+  createdAt  DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime  @updatedAt @db.Timestamp(0)
+  deletedAt  DateTime?
 
-  user     User     @relation(fields: [userId], references: [id])
-  musician Musician @relation(fields: [musicianId], references: [id])
+  senderReview   User @relation(name: "sentReviews", fields: [senderId], references: [id])
+  receiverReview User @relation(name: "receivedReviews", fields: [receiverId], references: [id])
+
+  @@index([senderId])
+  @@index([receiverId])
 }
 
 model Report {
   id         Int      @id @default(autoincrement())
-  userId     Int
-  musicianId Int
+  senderId   Int
+  receiverId Int
   complaint  String
   createdAt  DateTime @default(now()) @db.Timestamp(0)
 
-  user     User     @relation(fields: [userId], references: [id])
-  musician Musician @relation(fields: [musicianId], references: [id])
+  senderReport   User @relation(name: "sentReports", fields: [senderId], references: [id])
+  receiverReport User @relation(name: "receivedReports", fields: [receiverId], references: [id])
+
+  @@index([senderId])
+  @@index([receiverId])
 }
