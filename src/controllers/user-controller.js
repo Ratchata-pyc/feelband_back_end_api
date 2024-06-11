@@ -63,83 +63,39 @@ userController.getUserById = async (req, res, next) => {
         message: "User not found",
       });
     }
-
-    // ส่งข้อมูลผู้ใช้กลับไปยังลูกค้า
-    return res.status(200).json({ user });
-  } catch (error) {
-    // จัดการข้อผิดพลาด
-    next(error);
-  }
-};
-
-// // ฟังก์ชันสำหรับการดึงข้อมูลผู้ใช้ตาม ID
-// userController.getUserById = async (req, res, next) => {
-//   try {
-//     const userId = parseInt(req.params.profileId); // ดึง ID ผู้ใช้จาก URL parameter
-
-//     const user = await userService.findUserById(userId); // ค้นหาผู้ใช้จาก ID
-
-//     if (!user) {
-//       // ถ้าผู้ใช้ไม่พบในฐานข้อมูล
-//       return res.status(404).json({
-//         message: "User not found",
-//       });
-//     }
-
-//     // ส่งข้อมูลผู้ใช้กลับไปยังลูกค้า
-//     return res.status(200).json(user);
-//   } catch (error) {
-//     // จัดการข้อผิดพลาด
-//     next(error);
-//   }
-// };
-
-userController.profileUser = async (req, res, next) => {
-  // profileId ===> +req.params.profileId
-  // authUserId ===> req.user.id
-  try {
-    const profileUser = await userService.findUserById(+req.params.profileId);
-    if (!profileUser) {
-      createError({
-        message: "this profile user was not found",
-        statusCode: 400,
-      });
-    }
-
     // ลบข้อมูล password ก่อนส่งผลลัพธ์กลับไป
     delete user.password;
     delete user.isAdmin;
 
-    // ส่งข้อมูลผู้ใช้กลับไปให้ client
-    res.status(200).json({ user: profileUser });
-  } catch (err) {
-    next(err); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
-  }
-};
-
-// ฟังก์ชันสำหรับการดึงข้อมูลผู้ใช้ตาม ID
-userController.getUserById = async (req, res, next) => {
-  try {
-    const userId = parseInt(req.params.profileId); // ดึง ID ผู้ใช้จาก URL parameter
-    console.log("Fetching user with ID:", userId); // Log userId
-
-    const user = await userService.findUserById(userId); // ค้นหาผู้ใช้จาก ID
-    console.log("Fetched user:", user); // Log fetched user
-
-    if (!user) {
-      // ถ้าผู้ใช้ไม่พบในฐานข้อมูล
-      console.log("User not found with ID:", userId); // Log if user not found
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-
     // ส่งข้อมูลผู้ใช้กลับไปยังลูกค้า
     return res.status(200).json({ user });
   } catch (error) {
     // จัดการข้อผิดพลาด
-    console.error("Error fetching user:", error); // Log error if fetching fails
     next(error);
   }
 };
+
+// userController.profileUser = async (req, res, next) => {
+//   // profileId ===> +req.params.profileId
+//   // authUserId ===> req.user.id
+//   try {
+//     const profileUser = await userService.findUserById(+req.params.profileId);
+//     if (!profileUser) {
+//       createError({
+//         message: "this profile user was not found",
+//         statusCode: 400,
+//       });
+//     }
+
+//     // ลบข้อมูล password ก่อนส่งผลลัพธ์กลับไป
+//     delete user.password;
+//     delete user.isAdmin;
+
+//     // ส่งข้อมูลผู้ใช้กลับไปให้ client
+//     res.status(200).json({ user: profileUser });
+//   } catch (err) {
+//     next(err); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
+//   }
+// };
+
 module.exports = userController; // ส่งออก userController เพื่อใช้งานในส่วนอื่นของโปรเจกต์
