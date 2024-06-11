@@ -75,27 +75,4 @@ userController.getUserById = async (req, res, next) => {
   }
 };
 
-// userController.profileUser = async (req, res, next) => {
-//   // profileId ===> +req.params.profileId
-//   // authUserId ===> req.user.id
-//   try {
-//     const profileUser = await userService.findUserById(+req.params.profileId);
-//     if (!profileUser) {
-//       createError({
-//         message: "this profile user was not found",
-//         statusCode: 400,
-//       });
-//     }
-
-//     // ลบข้อมูล password ก่อนส่งผลลัพธ์กลับไป
-//     delete user.password;
-//     delete user.isAdmin;
-
-//     // ส่งข้อมูลผู้ใช้กลับไปให้ client
-//     res.status(200).json({ user: profileUser });
-//   } catch (err) {
-//     next(err); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
-//   }
-// };
-
 module.exports = userController; // ส่งออก userController เพื่อใช้งานในส่วนอื่นของโปรเจกต์
