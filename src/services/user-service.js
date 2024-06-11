@@ -1,44 +1,3 @@
-// const prisma = require("../model/prisma");
-
-// const userFiltered = {
-//   id: true,
-//   firstName: true,
-//   lastName: true,
-//   email: true,
-//   profileImage: true,
-//   createdAt: true,
-//   updatedAt: true,
-// };
-
-// const userService = {};
-
-// userService.createUser = (data) => prisma.user.create({ data });
-
-// userService.findUserByEmail = (email) =>
-//   prisma.user.findFirst({
-//     where: {
-//       email: email,
-//     },
-//   });
-
-// userService.findUserById = (userId) =>
-//   prisma.user.findUnique({ where: { id: userId } });
-
-// userService.updateUserById = (data, userId) =>
-//   prisma.user.update({
-//     where: {
-//       id: userId,
-//     },
-//     data,
-//   });
-
-// userService.findUserByIdList = (idList) =>
-//   prisma.user.findMany({
-//     where: { id: { in: idList } },
-//     select: userFiltered,
-//   });
-
-// module.exports = userService;
 const prisma = require("../model/prisma"); // นำเข้า prisma สำหรับการเชื่อมต่อและทำงานกับฐานข้อมูล
 
 const userFiltered = {
@@ -87,4 +46,64 @@ userService.updateUserById = (data, userId) =>
     data,
   });
 
+// ฟังก์ชันสำหรับค้นหาผู้ใช้จาก ID
+userService.findUserById = (userId) =>
+  prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      role: true,
+      genre: true,
+      province: true,
+      district: true,
+    },
+  });
+
 module.exports = userService; // ส่งออก userService เพื่อใช้งานในส่วนอื่นของโปรเจกต์
+
+// const prisma = require("../prisma"); // นำเข้า prisma สำหรับการเชื่อมต่อและทำงานกับฐานข้อมูล
+
+// const userFiltered = {
+//   id: true,
+//   firstName: true,
+//   lastName: true,
+//   email: true,
+//   profileImage: true,
+//   createdAt: true,
+//   updatedAt: true,
+// };
+
+// const userService = {};
+
+// // ฟังก์ชันสำหรับสร้างผู้ใช้ใหม่
+// userService.createUser = (data) => prisma.user.create({ data });
+
+// // ฟังก์ชันสำหรับค้นหาผู้ใช้จากอีเมล
+// userService.findUserByEmail = (email) =>
+//   prisma.user.findFirst({
+//     where: {
+//       email: email,
+//     },
+//   });
+
+// // ฟังก์ชันสำหรับค้นหาผู้ใช้จาก ID
+// userService.findUserById = (userId) =>
+//   prisma.user.findUnique({
+//     where: { id: userId },
+//     include: {
+//       role: true,
+//       genre: true,
+//       province: true,
+//       district: true,
+//     },
+//   });
+
+// // ฟังก์ชันสำหรับอัปเดตข้อมูลผู้ใช้ตาม ID
+// userService.updateUserById = (data, userId) =>
+//   prisma.user.update({
+//     where: {
+//       id: userId,
+//     },
+//     data,
+//   });
+
+// module.exports = userService;

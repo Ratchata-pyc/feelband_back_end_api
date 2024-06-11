@@ -5,18 +5,17 @@ const morgan = require("morgan");
 const errorMiddleware = require("./middlewares/error");
 const notFoundMiddleware = require("./middlewares/not-found");
 const authRouter = require("./routes/auth-route");
-
 const authenticate = require("./middlewares/authenticate");
+const userRouter = require("./routes/user-route"); // นำเข้า userRouter
 
 const app = express();
 
 app.use(cors());
 app.use(morgan("dev"));
-// app.use(limiter);
 app.use(express.json());
 
 app.use("/auth", authRouter);
-app.use("/users", authenticate);
+app.use("/users", userRouter); // เพิ่มการใช้งาน userRouter
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

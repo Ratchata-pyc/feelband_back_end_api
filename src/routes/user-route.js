@@ -41,3 +41,17 @@
 // // userRouter.get("/:profileId", userController.getProfileUser);
 
 // module.exports = userRouter;
+
+const express = require("express");
+const authenticate = require("../middlewares/authenticate");
+const authController = require("../controllers/auth-controller");
+
+const userRouter = express.Router();
+
+// Endpoint สำหรับอัปเดตข้อมูลผู้ใช้
+userRouter.patch("/update", authenticate, authController.updateUser);
+
+// Endpoint สำหรับดึงข้อมูลผู้ใช้ตาม ID
+userRouter.get("/:id", authController.getUserById);
+
+module.exports = userRouter;

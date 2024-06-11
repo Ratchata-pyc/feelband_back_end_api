@@ -66,4 +66,60 @@ authController.getMe = (req, res, next) => {
   res.status(200).json({ user: req.user }); // ส่งข้อมูลผู้ใช้ที่ถูกยืนยันตัวตนแล้วกลับไปให้ client
 };
 
+// ฟังก์ชันสำหรับeditprofile
+authController.updateUser = async (req, res, next) => {
+  try {
+    const userId = req.user.id; // ดึง ID ผู้ใช้จาก token ที่ authenticate
+    const data = req.body; // ดึงข้อมูลที่ผู้ใช้ส่งมา
+
+    // ลบข้อมูล isAdmin เพื่อป้องกันการอัปเดต
+    delete data.isAdmin;
+
+    // อัปเดตข้อมูลผู้ใช้ในฐานข้อมูล
+    const updatedUser = await userService.updateUserById(data, userId);
+
+    if (!updatedUser) {
+      createError({
+        message: "User not found", // ถ้าผู้ใช้ไม่พบในฐานข้อมูล
+        statusCode: 404,
+      });
+    }
+
+    // ลบข้อมูล password ก่อนส่งผลลัพธ์กลับไป
+    delete updatedUser.password;
+    delete updatedUser.isAdmin;
+
+    // ส่งสถานะและข้อมูลผู้ใช้ที่อัปเดตกลับไปให้ client
+    res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
+  } catch (err) {
+    next(err); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
+  }
+};
+
+authController.getUserById = async (req, res, next) => {
+  try {
+    const userId = parseInt(req.params.id); // ดึง ID ผู้ใช้จาก URL parameter
+
+    const user = await userService.findUserById(userId); // ค้นหาผู้ใช้จาก ID
+
+    if (!user) {
+      createError({
+        message: "User not found", // ถ้าผู้ใช้ไม่พบในฐานข้อมูล
+        statusCode: 404,
+      });
+    }
+
+    // ลบข้อมูล password ก่อนส่งผลลัพธ์กลับไป
+    delete user.password;
+    delete user.isAdmin;
+
+    // ส่งข้อมูลผู้ใช้กลับไปให้ client
+    res.status(200).json(user);
+  } catch (err) {
+    next(err); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
+  }
+};
+
 module.exports = authController; // ส่งออก authController เพื่อใช้งานในส่วนอื่นของโปรเจกต์
