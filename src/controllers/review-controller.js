@@ -1,68 +1,242 @@
+// const { PrismaClient } = require("@prisma/client");
+// const prisma = new PrismaClient();
+// const createError = require("../utils/create-error");
+
+// const reviewController = {};
+
+// reviewController.createReview = async (req, res, next) => {
+//   const senderId = req.user.id;
+//   const { receiverId, content } = req.body;
+
+//   console.log("Creating review with data:", {
+//     senderId,
+//     receiverId,
+//     content,
+//   });
+
+//   if (!receiverId || !content) {
+//     return res
+//       .status(400)
+//       .json({ error: "receiverId and content are required" });
+//   }
+
+//   if (senderId === receiverId) {
+//     return res.status(400).json({ error: "You cannot review yourself" });
+//   }
+
+//   try {
+//     const review = await prisma.review.create({
+//       data: {
+//         senderId,
+//         receiverId,
+//         content,
+//       },
+//     });
+//     res.status(201).json(review);
+//   } catch (error) {
+//     console.error("Error creating review:", error);
+//     res.status(500).json({ error: "Failed to create review" });
+//   }
+// };
+
+// reviewController.getReviewsByUserId = async (req, res, next) => {
+//   const userId = parseInt(req.params.userId);
+
+//   console.log("Retrieving reviews for userId:", userId);
+
+//   try {
+//     const reviews = await prisma.review.findMany({
+//       where: {
+//         receiverId: userId,
+//       },
+//       include: {
+//         senderReview: {
+//           select: {
+//             firstName: true,
+//             lastName: true,
+//           },
+//         },
+//       },
+//     });
+
+//     const formattedReviews = reviews.map((review) => ({
+//       id: review.id,
+//       content: review.content,
+//       createdAt: review.createdAt,
+//       updatedAt: review.updatedAt,
+//       senderId: review.senderId,
+//       receiverId: review.receiverId,
+//       senderFirstName: review.senderReview.firstName,
+//       senderLastName: review.senderReview.lastName,
+//     }));
+
+//     res.status(200).json(formattedReviews);
+//   } catch (error) {
+//     console.error("Error retrieving reviews:", error);
+//     res.status(500).json({ error: "Failed to retrieve reviews" });
+//   }
+// };
+
+// module.exports = reviewController;
+
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const createError = require("../utils/create-error"); // นำเข้า createError สำหรับการสร้างข้อผิดพลาด
+const createError = require("../utils/create-error");
 
-const reviewController = {}; // สร้างวัตถุ reviewController เพื่อเก็บฟังก์ชันต่างๆ สำหรับการจัดการรีวิว
+const reviewController = {};
 
-// ฟังก์ชันสำหรับการสร้างรีวิวใหม่
+// สร้างรีวิวใหม่
 reviewController.createReview = async (req, res, next) => {
-  const senderId = req.user.id; // ดึง senderId จาก token
-  const { receiverId, content } = req.body; // รับค่าจาก request body
+  const senderId = req.user.id;
+  const { receiverId, content } = req.body;
 
-  // ล็อกข้อมูลก่อนที่จะทำการส่งคำขอ
   console.log("Creating review with data:", {
     senderId,
     receiverId,
     content,
   });
 
-  // ตรวจสอบว่ามีค่าทั้งหมดหรือไม่
   if (!receiverId || !content) {
     return res
       .status(400)
       .json({ error: "receiverId and content are required" });
   }
 
-  // ตรวจสอบว่า senderId และ receiverId ไม่เหมือนกัน
   if (senderId === receiverId) {
     return res.status(400).json({ error: "You cannot review yourself" });
   }
 
   try {
-    // สร้างรีวิวใหม่ในฐานข้อมูลโดยใช้ Prisma
     const review = await prisma.review.create({
       data: {
-        senderId, // ID ของผู้ส่งรีวิวจาก token
-        receiverId, // ID ของผู้รับรีวิว
-        content, // เนื้อหาของรีวิว
+        senderId,
+        receiverId,
+        content,
       },
     });
-    res.status(201).json(review); // ส่งข้อมูลรีวิวที่สร้างแล้วกลับไปที่ client
+    res.status(201).json(review);
   } catch (error) {
     console.error("Error creating review:", error);
-    res.status(500).json({ error: "Failed to create review" }); // ส่งข้อผิดพลาดกลับไปที่ client ถ้ามีปัญหาในการสร้างรีวิว
+    res.status(500).json({ error: "Failed to create review" });
   }
 };
 
-// ฟังก์ชันสำหรับการดึงรีวิวที่ userId เป็น receiver
+// ดึงข้อมูลรีวิวตาม userId ของผู้รับ
 reviewController.getReviewsByUserId = async (req, res, next) => {
-  const userId = parseInt(req.params.userId); // ดึง userId จาก URL parameter
+  const userId = parseInt(req.params.userId);
 
-  // ล็อกข้อมูลก่อนที่จะทำการดึงรีวิว
   console.log("Retrieving reviews for userId:", userId);
 
   try {
-    // ดึงรีวิวจากฐานข้อมูลโดยใช้ Prisma ที่ userId เป็น receiver
     const reviews = await prisma.review.findMany({
       where: {
         receiverId: userId,
       },
+      include: {
+        senderReview: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
     });
-    res.status(200).json(reviews); // ส่งข้อมูลรีวิวกลับไปที่ client
+
+    const formattedReviews = reviews.map((review) => ({
+      id: review.id,
+      content: review.content,
+      createdAt: review.createdAt,
+      updatedAt: review.updatedAt,
+      senderId: review.senderId,
+      receiverId: review.receiverId,
+      senderFirstName: review.senderReview.firstName,
+      senderLastName: review.senderReview.lastName,
+    }));
+
+    res.status(200).json(formattedReviews);
   } catch (error) {
     console.error("Error retrieving reviews:", error);
-    res.status(500).json({ error: "Failed to retrieve reviews" }); // ส่งข้อผิดพลาดกลับไปที่ client ถ้ามีปัญหาในการดึงรีวิว
+    res.status(500).json({ error: "Failed to retrieve reviews" });
   }
 };
 
-module.exports = reviewController; // ส่งออก reviewController เพื่อใช้งานในส่วนอื่นของโปรเจกต์
+// แก้ไขรีวิว
+reviewController.updateReview = async (req, res, next) => {
+  const reviewId = parseInt(req.params.id);
+  const { content } = req.body;
+  const userId = req.user.id;
+
+  console.log("Updating review with data:", {
+    reviewId,
+    content,
+    userId,
+  });
+
+  if (!content) {
+    return res.status(400).json({ error: "Content is required" });
+  }
+
+  try {
+    const existingReview = await prisma.review.findUnique({
+      where: { id: reviewId },
+    });
+
+    if (!existingReview) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    if (existingReview.senderId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You can only edit your own reviews" });
+    }
+
+    const updatedReview = await prisma.review.update({
+      where: { id: reviewId },
+      data: { content },
+    });
+
+    res.status(200).json(updatedReview);
+  } catch (error) {
+    console.error("Error updating review:", error);
+    res.status(500).json({ error: "Failed to update review" });
+  }
+};
+
+// ลบรีวิว
+reviewController.deleteReview = async (req, res, next) => {
+  const reviewId = parseInt(req.params.id);
+  const userId = req.user.id;
+
+  console.log("Deleting review with data:", {
+    reviewId,
+    userId,
+  });
+
+  try {
+    const existingReview = await prisma.review.findUnique({
+      where: { id: reviewId },
+    });
+
+    if (!existingReview) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    if (existingReview.senderId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own reviews" });
+    }
+
+    await prisma.review.delete({
+      where: { id: reviewId },
+    });
+
+    res.status(204).send(); // No Content
+  } catch (error) {
+    console.error("Error deleting review:", error);
+    res.status(500).json({ error: "Failed to delete review" });
+  }
+};
+
+module.exports = reviewController;
