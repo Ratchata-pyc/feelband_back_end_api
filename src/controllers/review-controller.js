@@ -159,40 +159,4 @@ reviewController.deleteReview = async (req, res, next) => {
   }
 };
 
-// // ลบรีวิว
-// reviewController.deleteReview = async (req, res, next) => {
-//   const reviewId = parseInt(req.params.id);
-//   const userId = req.user.id;
-
-//   console.log("Deleting review with data:", {
-//     reviewId,
-//     userId,
-//   });
-
-//   try {
-//     const existingReview = await prisma.review.findUnique({
-//       where: { id: reviewId },
-//     });
-
-//     if (!existingReview) {
-//       return res.status(404).json({ error: "Review not found" });
-//     }
-
-//     if (existingReview.senderId !== userId) {
-//       return res
-//         .status(403)
-//         .json({ error: "You can only delete your own reviews" });
-//     }
-
-//     await prisma.review.delete({
-//       where: { id: reviewId },
-//     });
-
-//     res.status(204).send(); // No Content
-//   } catch (error) {
-//     console.error("Error deleting review:", error);
-//     res.status(500).json({ error: "Failed to delete review" });
-//   }
-// };
-
 module.exports = reviewController;

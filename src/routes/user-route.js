@@ -13,4 +13,18 @@ userRouter.get("/all", userController.getAllUsers);
 // Endpoint สำหรับดึงข้อมูลผู้ใช้ตาม ID
 userRouter.get("/:profileId", userController.getUserById);
 
+// Endpoint สำหรับอัปเดตสถานะ isAvailable
+userRouter.patch(
+  "/update-availability/:id",
+  authenticate,
+  userController.updateAvailability
+);
+
+// Endpoint สำหรับอัปเดตสถานะ isActive
+userRouter.patch(
+  "/update-active-status/:id",
+  authenticate,
+  userController.updateActiveStatus
+);
+
 module.exports = userRouter;

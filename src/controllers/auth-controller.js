@@ -54,6 +54,7 @@ authController.login = async (req, res, next) => {
     const accessToken = jwtService.sign({
       id: existUser.id,
       isAdmin: existUser.isAdmin,
+      iaActive: existUser.isActive,
     }); // สร้าง JSON Web Token สำหรับผู้ใช้ที่เข้าสู่ระบบสำเร็จ
     res.status(200).json({ accessToken }); // ส่ง token กลับไปให้ client
   } catch (err) {

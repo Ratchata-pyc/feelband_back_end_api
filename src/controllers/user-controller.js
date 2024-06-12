@@ -106,4 +106,56 @@ userController.getAllUsers = async (req, res, next) => {
   }
 };
 
+userController.updateAvailability = async (req, res, next) => {
+  try {
+    const userId = parseInt(req.params.id); // ดึง ID ผู้ใช้จาก URL parameter
+    const { isAvailable } = req.body; // ดึงสถานะ isAvailable จาก body ของ request
+
+    // อัปเดตสถานะ isAvailable ของผู้ใช้ในฐานข้อมูล
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { isAvailable },
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    // ส่งผลลัพธ์กลับไปให้ client
+    res
+      .status(200)
+      .json({ message: "Availability status updated", user: updatedUser });
+  } catch (error) {
+    next(error); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
+  }
+};
+
+userController.updateActiveStatus = async (req, res, next) => {
+  try {
+    const userId = parseInt(req.params.id); // ดึง ID ผู้ใช้จาก URL parameter
+    const { isActive } = req.body; // ดึงสถานะ isActive จาก body ของ request
+
+    // อัปเดตสถานะ isActive ของผู้ใช้ในฐานข้อมูล
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { isActive },
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    // ส่งผลลัพธ์กลับไปให้ client
+    res
+      .status(200)
+      .json({ message: "Active status updated", user: updatedUser });
+  } catch (error) {
+    next(error); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
+  }
+};
+
 module.exports = userController; // ส่งออก userController เพื่อใช้งานในส่วนอื่นของโปรเจกต์
