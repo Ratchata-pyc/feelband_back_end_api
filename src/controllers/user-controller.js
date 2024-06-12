@@ -39,17 +39,6 @@ userController.updateUser = async (req, res, next) => {
   }
 };
 
-// ฟังก์ชันสำหรับการดึงข้อมูลผู้ใช้ทั้งหมด
-userController.getAllUsers = async (req, res, next) => {
-  try {
-    const users = await prisma.user.findMany(); // ดึงข้อมูลผู้ใช้ทั้งหมด
-    res.status(200).json(users); // ส่งข้อมูลผู้ใช้ทั้งหมดกลับไปที่ client
-  } catch (error) {
-    console.error("Error retrieving users:", error);
-    res.status(500).json({ error: "Failed to retrieve users" }); // ส่งข้อผิดพลาดกลับไปที่ client ถ้ามีปัญหาในการดึงผู้ใช้
-  }
-};
-
 // ฟังก์ชันสำหรับการดึงข้อมูลผู้ใช้ตาม ID
 userController.getUserById = async (req, res, next) => {
   try {
@@ -72,6 +61,48 @@ userController.getUserById = async (req, res, next) => {
   } catch (error) {
     // จัดการข้อผิดพลาด
     next(error);
+  }
+};
+
+// ฟังก์ชันสำหรับการดึงข้อมูลผู้ใช้ทั้งหมด
+userController.getAllUsers = async (req, res, next) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true, // เพิ่มการเลือก id ด้วย
+        firstName: true,
+        lastName: true,
+        budget: true,
+        role: {
+          select: {
+            id: true,
+            role: true,
+          },
+        },
+        genre: {
+          select: {
+            id: true,
+            genre: true,
+          },
+        },
+        province: {
+          select: {
+            id: true,
+            province: true,
+          },
+        },
+        district: {
+          select: {
+            id: true,
+            district: true,
+          },
+        },
+        profileImage: true,
+      },
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve users" });
   }
 };
 

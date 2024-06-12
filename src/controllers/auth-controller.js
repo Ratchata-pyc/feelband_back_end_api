@@ -98,28 +98,28 @@ authController.updateUser = async (req, res, next) => {
   }
 };
 
-authController.getUserById = async (req, res, next) => {
-  try {
-    const userId = parseInt(req.params.id); // ดึง ID ผู้ใช้จาก URL parameter
-
-    const user = await userService.findUserById(userId); // ค้นหาผู้ใช้จาก ID
-
-    if (!user) {
-      createError({
-        message: "User not found", // ถ้าผู้ใช้ไม่พบในฐานข้อมูล
-        statusCode: 404,
-      });
-    }
-
-    // ลบข้อมูล password ก่อนส่งผลลัพธ์กลับไป
-    delete user.password;
-    delete user.isAdmin;
-
-    // ส่งข้อมูลผู้ใช้กลับไปให้ client
-    res.status(200).json(user);
-  } catch (err) {
-    next(err); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
-  }
-};
-
 module.exports = authController; // ส่งออก authController เพื่อใช้งานในส่วนอื่นของโปรเจกต์
+
+// authController.getUserById = async (req, res, next) => {
+//   try {
+//     const userId = parseInt(req.params.id); // ดึง ID ผู้ใช้จาก URL parameter
+
+//     const user = await userService.findUserById(userId); // ค้นหาผู้ใช้จาก ID
+
+//     if (!user) {
+//       createError({
+//         message: "User not found", // ถ้าผู้ใช้ไม่พบในฐานข้อมูล
+//         statusCode: 404,
+//       });
+//     }
+
+//     // ลบข้อมูล password ก่อนส่งผลลัพธ์กลับไป
+//     delete user.password;
+//     delete user.isAdmin;
+
+//     // ส่งข้อมูลผู้ใช้กลับไปให้ client
+//     res.status(200).json(user);
+//   } catch (err) {
+//     next(err); // ส่งข้อผิดพลาดไปยัง middleware ถัดไป
+//   }
+// };
