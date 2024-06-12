@@ -72,6 +72,7 @@ userController.getAllUsers = async (req, res, next) => {
         id: true, // เพิ่มการเลือก id ด้วย
         firstName: true,
         lastName: true,
+        isActive: true,
         budget: true,
         role: {
           select: {
