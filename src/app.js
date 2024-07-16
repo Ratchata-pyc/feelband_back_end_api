@@ -32,5 +32,7 @@ app.use("/api", reportRoutes); // เพิ่มการใช้งาน rep
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`server is running on port: ${PORT}`));
+// const PORT = process.env.PORT || 8000;
+// app.listen(PORT, () => console.log(`server is running on port: ${PORT}`));
+
+module.exports = app;
