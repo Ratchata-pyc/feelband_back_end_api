@@ -73,6 +73,7 @@ userController.getAllUsers = async (req, res, next) => {
         firstName: true,
         lastName: true,
         isActive: true,
+        isAvailable: true,
         budget: true,
         role: {
           select: {
