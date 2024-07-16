@@ -58,7 +58,7 @@ const reportRoutes = require("./routes/report-route"); // นำเข้า rep
 const uploadRouter = require("./routes/upload-route");
 
 // Log DATABASE_URL
-console.log(`DATABASE_URL: ${process.env.DATABASE_URL}`);
+// console.log(`DATABASE_URL: ${process.env.DATABASE_URL}`);
 
 const app = express();
 
