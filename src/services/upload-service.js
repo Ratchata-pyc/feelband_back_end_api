@@ -11,6 +11,9 @@
 const cloudinary = require("../config/cloudinary");
 const fs = require("fs");
 const util = require("util");
+const dotenv = require("dotenv");
+
+dotenv.config(); // โหลด environment variables
 
 const unlinkFile = util.promisify(fs.unlink); // สร้างฟังก์ชันสำหรับลบไฟล์แบบ async
 
