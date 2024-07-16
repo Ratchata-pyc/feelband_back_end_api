@@ -1,113 +1,113 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const firstNames = [
-  "Paul",
-  "John",
-  "George",
-  "Ringo",
-  "Freddie",
-  "Elton",
-  "David",
-  "Mick",
-  "Keith",
-  "Brian",
-  "Roger",
-  "Jim",
-  "Kurt",
-  "Axl",
-  "Slash",
-  "Bono",
-  "Edge",
-  "Adam",
-  "Larry",
-  "Bruce",
-  "Eddie",
-  "Robert",
-  "Jimmy",
-  "John",
-  "Ian",
-  "Angus",
-  "Malcolm",
-  "Phil",
-  "Steven",
-  "Joe",
-  "James",
-  "Lars",
-  "Kirk",
-  "Cliff",
-  "Lemmy",
-  "Ozzy",
-  "Tony",
-  "Geezer",
-  "Bill",
-  "Ronnie",
-  "Tom",
-  "Trent",
-  "Billy",
-  "Corgan",
-  "Chris",
-  "Cornell",
-  "Eddie",
-  "Vedder",
-  "Layne",
-  "Staley",
-];
-const lastNames = [
-  "McCartney",
-  "Lennon",
-  "Harrison",
-  "Starr",
-  "Mercury",
-  "John",
-  "Bowie",
-  "Jagger",
-  "Richards",
-  "May",
-  "Taylor",
-  "Morrison",
-  "Cobain",
-  "Rose",
-  "Hudson",
-  "Vox",
-  "Evans",
-  "Clayton",
-  "Mullen",
-  "Springsteen",
-  "Vedder",
-  "Plant",
-  "Page",
-  "Bonham",
-  "Curtis",
-  "Young",
-  "Young",
-  "Rudd",
-  "Tyler",
-  "Perry",
-  "Hetfield",
-  "Ulrich",
-  "Hammett",
-  "Burton",
-  "Kilmister",
-  "Osbourne",
-  "Iommi",
-  "Butler",
-  "Ward",
-  "Dio",
-  "Petty",
-  "Reznor",
-  "Corgan",
-  "Chamberlin",
-  "Cornell",
-  "Staley",
-  "Vedder",
-  "Cobain",
-  "Staley",
-  "Cantrell",
-];
+// const firstNames = [
+//   "Paul",
+//   "John",
+//   "George",
+//   "Ringo",
+//   "Freddie",
+//   "Elton",
+//   "David",
+//   "Mick",
+//   "Keith",
+//   "Brian",
+//   "Roger",
+//   "Jim",
+//   "Kurt",
+//   "Axl",
+//   "Slash",
+//   "Bono",
+//   "Edge",
+//   "Adam",
+//   "Larry",
+//   "Bruce",
+//   "Eddie",
+//   "Robert",
+//   "Jimmy",
+//   "John",
+//   "Ian",
+//   "Angus",
+//   "Malcolm",
+//   "Phil",
+//   "Steven",
+//   "Joe",
+//   "James",
+//   "Lars",
+//   "Kirk",
+//   "Cliff",
+//   "Lemmy",
+//   "Ozzy",
+//   "Tony",
+//   "Geezer",
+//   "Bill",
+//   "Ronnie",
+//   "Tom",
+//   "Trent",
+//   "Billy",
+//   "Corgan",
+//   "Chris",
+//   "Cornell",
+//   "Eddie",
+//   "Vedder",
+//   "Layne",
+//   "Staley",
+// ];
+// const lastNames = [
+//   "McCartney",
+//   "Lennon",
+//   "Harrison",
+//   "Starr",
+//   "Mercury",
+//   "John",
+//   "Bowie",
+//   "Jagger",
+//   "Richards",
+//   "May",
+//   "Taylor",
+//   "Morrison",
+//   "Cobain",
+//   "Rose",
+//   "Hudson",
+//   "Vox",
+//   "Evans",
+//   "Clayton",
+//   "Mullen",
+//   "Springsteen",
+//   "Vedder",
+//   "Plant",
+//   "Page",
+//   "Bonham",
+//   "Curtis",
+//   "Young",
+//   "Young",
+//   "Rudd",
+//   "Tyler",
+//   "Perry",
+//   "Hetfield",
+//   "Ulrich",
+//   "Hammett",
+//   "Burton",
+//   "Kilmister",
+//   "Osbourne",
+//   "Iommi",
+//   "Butler",
+//   "Ward",
+//   "Dio",
+//   "Petty",
+//   "Reznor",
+//   "Corgan",
+//   "Chamberlin",
+//   "Cornell",
+//   "Staley",
+//   "Vedder",
+//   "Cobain",
+//   "Staley",
+//   "Cantrell",
+// ];
 
-const roleIds = [1, 2, 3, 4, 5, 6];
-const genreIds = [1, 2, 3, 4];
+// const roleIds = [1, 2, 3, 4, 5, 6];
+// const genreIds = [1, 2, 3, 4];
 
 const provinces = [
   { id: 1, province: "กรุงเทพมหานคร" },
@@ -1273,58 +1273,58 @@ const districts = {
   ],
 };
 
-const users = Array.from({ length: 50 }, (_, i) => ({
-  firstName: firstNames[i % firstNames.length],
-  lastName: lastNames[i % lastNames.length],
-  email: `musician${i + 1}@example.com`,
-  password: "password", // You should hash the password before using it in production
-  isAdmin: false,
-  isActive: true,
-  isAvailable: false,
-  roleId: roleIds[Math.floor(Math.random() * roleIds.length)],
-  genreId: genreIds[Math.floor(Math.random() * genreIds.length)],
-  budget: ((Math.floor(Math.random() * 10) + 1) * 1000).toString(), // Rounded budget values
-  provinceId: provinces[Math.floor(Math.random() * provinces.length)].id,
-  districtId:
-    districts[provinces[Math.floor(Math.random() * provinces.length)].id][
-      Math.floor(Math.random() * 2)
-    ].id,
-  contact: `line_id_${i + 1}`,
-  description: `Description for musician ${i + 1}`,
-}));
+// const users = Array.from({ length: 50 }, (_, i) => ({
+//   firstName: firstNames[i % firstNames.length],
+//   lastName: lastNames[i % lastNames.length],
+//   email: `musician${i + 1}@example.com`,
+//   password: "password", // You should hash the password before using it in production
+//   isAdmin: false,
+//   isActive: true,
+//   isAvailable: false,
+//   roleId: roleIds[Math.floor(Math.random() * roleIds.length)],
+//   genreId: genreIds[Math.floor(Math.random() * genreIds.length)],
+//   budget: ((Math.floor(Math.random() * 10) + 1) * 1000).toString(), // Rounded budget values
+//   provinceId: provinces[Math.floor(Math.random() * provinces.length)].id,
+//   districtId:
+//     districts[provinces[Math.floor(Math.random() * provinces.length)].id][
+//       Math.floor(Math.random() * 2)
+//     ].id,
+//   contact: `line_id_${i + 1}`,
+//   description: `Description for musician ${i + 1}`,
+// }));
 
-const positiveReviews = [
-  "Excellent performance, very professional!",
-  "Amazing talent, would hire again!",
-  "Great musician, really enjoyed the show.",
-  "Highly skilled and very friendly.",
-  "Outstanding performance, highly recommended!",
-];
+// const positiveReviews = [
+//   "Excellent performance, very professional!",
+//   "Amazing talent, would hire again!",
+//   "Great musician, really enjoyed the show.",
+//   "Highly skilled and very friendly.",
+//   "Outstanding performance, highly recommended!",
+// ];
 
-const negativeReviews = [
-  "Poor performance, not as expected.",
-  "Unprofessional behavior, would not hire again.",
-  "Disappointing experience, lacked preparation.",
-  "Not up to the mark, needs improvement.",
-  "Below average performance, not recommended.",
-];
+// const negativeReviews = [
+//   "Poor performance, not as expected.",
+//   "Unprofessional behavior, would not hire again.",
+//   "Disappointing experience, lacked preparation.",
+//   "Not up to the mark, needs improvement.",
+//   "Below average performance, not recommended.",
+// ];
 
-const reviews = Array.from({ length: 20 }, (_, i) => {
-  const isPositive = Math.random() > 0.5;
-  return {
-    senderId: Math.floor(Math.random() * 45) + 6, // Sender from users 6-50
-    receiverId: Math.floor(Math.random() * 5) + 1, // Receiver from users 1-5
-    content: isPositive
-      ? positiveReviews[Math.floor(Math.random() * positiveReviews.length)]
-      : negativeReviews[Math.floor(Math.random() * negativeReviews.length)],
-  };
-});
+// const reviews = Array.from({ length: 20 }, (_, i) => {
+//   const isPositive = Math.random() > 0.5;
+//   return {
+//     senderId: Math.floor(Math.random() * 45) + 6, // Sender from users 6-50
+//     receiverId: Math.floor(Math.random() * 5) + 1, // Receiver from users 1-5
+//     content: isPositive
+//       ? positiveReviews[Math.floor(Math.random() * positiveReviews.length)]
+//       : negativeReviews[Math.floor(Math.random() * negativeReviews.length)],
+//   };
+// });
 
-const reports = Array.from({ length: 10 }, (_, i) => ({
-  senderId: Math.floor(Math.random() * 45) + 6, // Sender from users 6-50
-  receiverId: Math.floor(Math.random() * 50) + 1, // Receiver from users 1-50
-  complaint: `Complaint content ${i + 1}`,
-}));
+// const reports = Array.from({ length: 10 }, (_, i) => ({
+//   senderId: Math.floor(Math.random() * 45) + 6, // Sender from users 6-50
+//   receiverId: Math.floor(Math.random() * 50) + 1, // Receiver from users 1-50
+//   complaint: `Complaint content ${i + 1}`,
+// }));
 
 const run = async () => {
   // Clear existing data
