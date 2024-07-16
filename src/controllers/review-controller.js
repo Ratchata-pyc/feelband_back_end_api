@@ -56,6 +56,7 @@ reviewController.getReviewsByUserId = async (req, res, next) => {
           select: {
             firstName: true,
             lastName: true,
+            profileImage: true, // เพิ่มการดึง profileImage
           },
         },
       },
@@ -70,6 +71,7 @@ reviewController.getReviewsByUserId = async (req, res, next) => {
       receiverId: review.receiverId,
       senderFirstName: review.senderReview.firstName,
       senderLastName: review.senderReview.lastName,
+      profileImage: review.senderReview.profileImage, // เพิ่ม profileImage ในผลลัพธ์
     }));
 
     res.status(200).json(formattedReviews);

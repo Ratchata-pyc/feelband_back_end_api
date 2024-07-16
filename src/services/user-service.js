@@ -46,4 +46,17 @@ userService.updateUserById = (data, userId) =>
     data,
   });
 
+// ฟังก์ชันสำหรับอัปเดตภาพโปรไฟล์ใช้ตาม ID
+userService.updateProfileImageById = (profileImage, id) => {
+  console.log(profileImage);
+  return prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      profileImage,
+    },
+  });
+};
+
 module.exports = userService; // ส่งออก userService เพื่อใช้งานในส่วนอื่นของโปรเจกต์

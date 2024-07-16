@@ -60,6 +60,14 @@ reportController.getAllReports = async (req, res, next) => {
   console.log("Retrieving all reports");
 
   try {
+    console.log(req.user);
+    if (!req.user.isAdmin) {
+      createError({
+        message: "Forbidden",
+        statusCode: 403,
+      });
+    }
+
     const reports = await prisma.report.findMany({
       include: {
         senderReport: {

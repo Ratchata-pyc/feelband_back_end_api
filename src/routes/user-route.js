@@ -1,11 +1,16 @@
 const express = require("express");
 const authenticate = require("../middlewares/authenticate");
 const userController = require("../controllers/user-controller");
-
 const userRouter = express.Router();
+const upload = require("../middlewares/upload");
 
 // Endpoint สำหรับอัปเดตข้อมูลผู้ใช้
-userRouter.patch("/update", authenticate, userController.updateUser);
+userRouter.patch(
+  "/update",
+  authenticate,
+  // upload.single("profileImage"),
+  userController.updateUser
+);
 
 // Route สำหรับการดึงข้อมูลผู้ใช้ทั้งหมด
 userRouter.get("/all", userController.getAllUsers);
