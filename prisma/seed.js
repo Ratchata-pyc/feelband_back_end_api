@@ -106,8 +106,8 @@ const prisma = new PrismaClient();
 //   "Cantrell",
 // ];
 
-// const roleIds = [1, 2, 3, 4, 5, 6];
-// const genreIds = [1, 2, 3, 4];
+const roleIds = [1, 2, 3, 4, 5, 6];
+const genreIds = [1, 2, 3, 4];
 
 const provinces = [
   { id: 1, province: "กรุงเทพมหานคร" },
