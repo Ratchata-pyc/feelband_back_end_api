@@ -35,6 +35,7 @@
 // const PORT = process.env.PORT || 8000;
 // app.listen(PORT, () => console.log(`server is running on port: ${PORT}`));
 
+require("dotenv").config(); // โหลดตัวแปรสภาพแวดล้อมจากไฟล์ .env
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
