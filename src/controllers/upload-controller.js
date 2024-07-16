@@ -36,6 +36,7 @@ uploadController.uploadProfileImage = async (req, res, next) => {
     }
 
     const image = await uploadService.upload(req.file.path);
+    console.log("here:", image);
     res
       .status(200)
       .json({ message: "File uploaded successfully", filePath: image });

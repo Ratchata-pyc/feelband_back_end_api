@@ -22,7 +22,7 @@ const uploadService = {};
 uploadService.upload = async (path) => {
   try {
     const { secure_url } = await cloudinary.uploader.upload(path);
-    await unlinkFile(path); // ลบไฟล์หลังจากอัปโหลดสำเร็จ
+    // await unlinkFile(path); // ลบไฟล์หลังจากอัปโหลดสำเร็จ
     return secure_url;
   } catch (error) {
     console.error("Cloudinary upload error:", error);
